@@ -7,6 +7,7 @@ import { ShareOutlined } from "@mui/icons-material";
 import { MoreHoriz } from "@mui/icons-material";
 import Comments from "../comments/Comments";
 import { useState } from "react";
+import moment from 'moment'
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
@@ -27,14 +28,14 @@ const Post = ({ post }) => {
               >
                 <span className="name">{post.name}</span>
               </Link>
-              <span className="date">a few secondes ago</span>
+              <span className="date">{moment(post.createdAt).fromNow()}</span>
             </div>
           </div>
           <MoreHoriz />
         </div>
         <div className="content">
           <p>{post.desc}</p>
-          <img src={post.img} alt="" />
+          <img src={'./upload/' + post.img} alt="" />
         </div>
         <div className="info">
           <div className="item">
