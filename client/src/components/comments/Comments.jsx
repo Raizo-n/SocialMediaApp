@@ -1,46 +1,66 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "./comments.scss";
-import {AuthContext} from '../../context/authContext'
+import { AuthContext } from "../../context/authContext";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
+import moment from "moment";
 
-const Comments = () => {
-    const {currentUser} = useContext(AuthContext)
-  //Temporary
-  const comments = [
-    {
-      id: 1,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, perspiciatis? Molestias qui rem veritatis sed quas voluptatibus officiis quam quos tempore illo explicabo, alias voluptas impedit. Nobis, minima obcaecati! Itaque.",
-      name: "Rachel",
-      userId: 1,
-      profilePic:
-        "https://images.pexels.com/photos/15254469/pexels-photo-15254469.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+const Comments = ({ postId }) => {
+  const [ desc, setDesc ] = useState("");
+  const { currentUser } = useContext(AuthContext);
+
+  const { isLoading, error, data } = useQuery(["comments"], () =>
+    makeRequest.get("/comments?postId=" + postId).then((res) => {
+      return res.data;
+    })
+  );
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    (newComment) => {
+      return makeRequest.post("/comments", newComment);
     },
     {
-      id: 2,
-      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo, perspiciatis? Molestias qui rem veritatis sed quas voluptatibus officiis quam quos tempore illo explicabo, alias voluptas impedit. Nobis, minima obcaecati! Itaque.",
-      name: "Rachel",
-      userId: 2,
-      profilePic:
-        "https://images.pexels.com/photos/15254469/pexels-photo-15254469.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-  ];
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["comments"]);
+      },
+    }
+  );
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    mutation.mutate({ desc, postId });
+    setDesc("");
+  };
+
   return (
     <div className="comments">
-        <div className="write">
-          <img src={currentUser.profilePic} alt="" />
-          <input type="text" placeholder="Write a comment..." />
-          <button>Send</button>
-
-        </div>
-      {comments.map((comment) => (
-        <div className="comment">
-          <img src={comment.profilePic} alt="" />
-          <div className="info">
-            <span>{comment.name}</span>
-            <p>{comment.desc}</p>
-          </div>
-          <span className="date">1 min ago</span>
-        </div>
-      ))}
+      <div className="write">
+        <img src={currentUser.profilePic} alt="" />
+        <input
+          type="text"
+          placeholder="Write a comment..."
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+        />
+        <button onClick={handleClick}>Send</button>
+      </div>
+      {isLoading
+        ? "Loading..."
+        : data.map((comment) => (
+            <div className="comment">
+              <img src={comment.profilePic} alt="" />
+              <div className="info">
+                <span>{comment.name}</span>
+                <p>{comment.desc}</p>
+              </div>
+              <span className="date">
+                {moment(comment.createdAt).fromNow()}
+              </span>
+            </div>
+          ))}
     </div>
   );
 };
