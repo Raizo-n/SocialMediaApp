@@ -22,7 +22,9 @@ function NavBar() {
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <span>CICCC APP</span>
         </Link>
-        <HomeOutlinedIcon />
+        <Link to={"/"} style={{ textDecoration: "none" }}>
+          <HomeOutlinedIcon className="home"/>
+        </Link>
         {darkMode ? (
           <WbSunnyOutlinedIcon className="darkMode" onClick={toggle} />
         ) : (
@@ -39,10 +41,7 @@ function NavBar() {
         <EmailOutlinedIcon />
         <NotificationsNoneOutlinedIcon />
         <div className="user">
-          <img
-            src={currentUser.profilePic}
-            alt="user's img"
-          />
+          <img src={currentUser.profilePic} alt="user's img" />
           <span>{currentUser.name}</span>
         </div>
       </div>
