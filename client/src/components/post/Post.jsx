@@ -97,7 +97,7 @@ const Post = ({ post }) => {
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlined />
-            {data?.length} Comments
+            Comments
           </div>
           <div className="item">
             <ShareOutlined />

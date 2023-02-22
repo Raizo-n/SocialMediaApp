@@ -6,7 +6,7 @@
             "use": "@vercel/node"
         }
     ],
-    "rewrite": [
+    "rewrites": [
         {
             "source": "/(.*)",
             "destination": "./index.js"

@@ -32,7 +32,7 @@ const LeftBar = () => {
             </div>
           </Link> */}
           <div className="user">
-            <img src={currentUser.profilePic} alt="user's img" />
+            <img src={"/upload/" + currentUser.profilePic} alt="" />
             <span>{currentUser.name}</span>
           </div>
           <div className="item">

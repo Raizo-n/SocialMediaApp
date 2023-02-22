@@ -1,7 +1,7 @@
 import "./share.scss";
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import GroupsIcon from '@mui/icons-material/Groups';
-import PlaceIcon from '@mui/icons-material/Place';
+import UploadFileIcon from "@mui/icons-material/UploadFile";
+import GroupsIcon from "@mui/icons-material/Groups";
+import PlaceIcon from "@mui/icons-material/Place";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/authContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,7 +22,10 @@ const Share = () => {
     }
   };
 
+  
+
   const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
 
   const queryClient = useQueryClient();
 
@@ -52,7 +55,7 @@ const Share = () => {
       <div className="container">
         <div className="top">
           <div className="left">
-            <img src={"/upload/" + currentUser.profilePic} alt="" />
+            <img src={'/upload/' + currentUser.profilePic} alt="" />
             <input
               type="text"
               placeholder={`What's on your mind ${currentUser.name}?`}
@@ -82,11 +85,11 @@ const Share = () => {
               </div>
             </label>
             <div className="item">
-              <PlaceIcon/>
+              <PlaceIcon />
               <span>Add Place</span>
             </div>
             <div className="item">
-              <GroupsIcon/>
+              <GroupsIcon />
               <span>Tag Friends</span>
             </div>
           </div>

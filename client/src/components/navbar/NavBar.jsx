@@ -41,7 +41,7 @@ function NavBar() {
         <EmailOutlinedIcon />
         <NotificationsNoneOutlinedIcon />
         <div className="user">
-          <img src={currentUser.profilePic} alt="user's img" />
+          <img src={"/upload/" + currentUser.profilePic} alt="user's img" />
           <span>{currentUser.name}</span>
         </div>
       </div>
